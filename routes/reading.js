@@ -29,7 +29,7 @@ module.exports = (app) => {
       })
         .then(() => {
           console.info(`[END] set estimate successful! ${html_url}`)
-          return fetch(`https://api.zenhub.io/v4/reports/release/591dc19e81a6781f839705b9/items/issues?access_token=${ZENHUB_ACCESS_TOKEN_V4}`,
+          return fetch(`https://api.zenhub.io/v4/reports/release/596467797947e2685fa33e1e/items/issues?access_token=${ZENHUB_ACCESS_TOKEN_V4}`,
             {
               method: 'POST',
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
