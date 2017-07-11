@@ -52,7 +52,7 @@ module.exports = (app) => {
     let keyword = encodeURIComponent(title.replace(/\s/g, '+'))
     console.info('[KEYWORD]', keyword)
 
-    fetch(`https://api.github.com/search/issues?q=${keyword}%20repo:jimmylv/reading`)
+    fetch(`https://api.github.com/search/issues?q=${keyword}%20repo:${REPO_OWNER}/${REPO_NAME}`)
       .then(response => response.json())
       .then(data => {
         console.info('[RESULT]', data)
@@ -102,7 +102,7 @@ module.exports = (app) => {
     let keyword = encodeURIComponent(title.replace(/\s/g, '+'))
     console.info('[KEYWORD]', keyword)
 
-    fetch(`https://api.github.com/search/issues?q=${keyword}%20repo:jimmylv/reading%20is:open`)
+    fetch(`https://api.github.com/search/issues?q=${keyword}%20repo:${REPO_OWNER}/${REPO_NAME}%20is:open`)
       .then(response => response.json())
       .then(data => {
         console.info('[RESULT]', data)
