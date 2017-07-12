@@ -48,6 +48,7 @@ module.exports = (app) => {
 
     console.info('[BEGIN]', req.query)
     const title = req.query.title
+    const page_url = req.query.page
 
     let keyword = encodeURIComponent(title.replace(/\s/g, '+'))
     console.info('[KEYWORD]', keyword)
@@ -77,6 +78,15 @@ module.exports = (app) => {
             .then(response => response.json())
             .then(({ url, html_url }) => {
               console.info(`[END] issue created successful! ${html_url}`)
+
+              fetch(`${url}/comments?access_token=${GITHUB_ACCESS_TOKEN}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ body: `> ${page_url}` }),
+              })
+                .then(() => console.info(`[END] added comment successful! ${html_url}`))
+                .catch(err => res.json('error', { error: err }))
+
               fetch(`${url}?access_token=${GITHUB_ACCESS_TOKEN}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
