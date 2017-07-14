@@ -131,4 +131,34 @@ module.exports = (app) => {
       })
       .catch(err => res.json('error', { error: err }))
   })
+
+  app.post('/reading/favorite', (req, res) => {
+    // need create favorite first
+    const { GITHUB_ACCESS_TOKEN } = req.webtaskContext.secrets
+
+    const title = req.query.title
+    console.info('[BEGIN]', { title })
+
+    let keyword = encodeURIComponent(title.replace(/\s/g, '+'))
+    console.info('[KEYWORD]', keyword)
+
+    fetch(`https://api.github.com/search/issues?q=${keyword}%20repo:${REPO_OWNER}/${REPO_NAME}%20is:open`)
+      .then(response => response.json())
+      .then(data => {
+        console.info('[RESULT]', data)
+        if (data.total_count > 0) {
+          data.items.forEach(({ url, html_url }) =>
+            fetch(`${url}/labels?access_token=${GITHUB_ACCESS_TOKEN}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(['favorite']),
+            })
+              .then(() => console.info(`[END] added label successful! ${html_url}`))
+              .catch(err => res.json('error', { error: err })))
+          res.json({ message: 'Added label into issue successful!' })
+        }
+        res.json({ error: 'Not Found!' })
+      })
+      .catch(err => res.json('error', { error: err }))
+  })
 }
