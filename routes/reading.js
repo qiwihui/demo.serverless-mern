@@ -48,7 +48,7 @@ module.exports = (app) => {
 
     console.info('[BEGIN]', req.query)
     const title = req.query.title
-    const page_url = req.query.page
+    const page_url = req.query.pageurl
 
     let keyword = encodeURIComponent(title.replace(/\s/g, '+'))
     console.info('[KEYWORD]', keyword)
